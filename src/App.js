@@ -1,25 +1,104 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import "./App.css";
+
+const accessToken =
+  "RzFzerLP0OIDL_fiC9vJwsfF47nFkL6UDNRvfthAO8Y";
+const spaceId = "h9ilit1fiefr";
+const query = `
+{
+  blogPostCollection{
+    total
+    items{
+      title
+      description
+      image{
+        title
+        fileName
+      }
+    }
+  }
+}
+`;
+
+class App extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      blogs: [],
+      loading: true,
+      error: null
+    };
+  }
+
+  componentDidMount() {
+    fetch(
+      `https://graphql.contentful.com/content/v1/spaces/${spaceId}/environments/master`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${accessToken}`
+        },
+        body: JSON.stringify({
+          query
+        })
+      }
+    )
+      .then(res => res.json())
+      .then(response => {
+        console.log(response);
+
+        const { data } = response;
+        this.setState({
+          loading: false,
+          blogs: data ? data.blogPostCollection.items : []
+        });
+      })
+      .catch(error => {
+        this.setState({
+          loading: false,
+          error: error.message
+        });
+      });
+  }
+
+  render() {
+    if (this.state.loading) {
+      return "loading";
+    }
+
+    if (this.state.error) {
+      return this.state.error;
+    }
+
+    if (!this.state.blogs.length) {
+      return "no blogs defined";
+    }
+
+    const { blogs } = this.state;
+
+    return (
+      <div className="App">
+        {blogs.map(blog => {
+          return (
+            <div className="blog" key={blog.title}>
+              <span className="blog__releaseYear">{blog.description}</span>
+              {blog.image && (
+                <img
+                  className="blog__image"
+                  src={blog.image.url}
+                  alt={blog.image.description}
+                />
+              )}
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
 }
 
-export default App;
+export default App

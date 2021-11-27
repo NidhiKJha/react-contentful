@@ -1,38 +1,39 @@
 .App {
+  font-family: sans-serif;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.album {
+  position: relative;
+  box-shadow: 0 0.25em 1.5em #ccc;
+  border-radius: 0.25em;
+  margin-bottom: 2em;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12em, 1fr));
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.album__container {
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+.album__cover {
+  max-width: 100%;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.album__headline {
+  font-size: 1.25em;
 }
 
-.App-link {
-  color: #61dafb;
-}
+.album__releaseYear {
+  position: absolute;
+  left: 1em;
+  top: 1em;
+  font-size: 0.875em;
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  padding: 0.5em;
+  background: white;
+  color: #444;
+  border-radius: 0.125em;
+  box-shadow: 0 0.125em 0.25em #333;
 }
