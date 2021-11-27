@@ -15,6 +15,7 @@ const query = `
       description
       image{
         title
+        url
         fileName
       }
     }
@@ -66,18 +67,6 @@ class App extends Component {
   }
 
   render() {
-    if (this.state.loading) {
-      return "loading";
-    }
-
-    if (this.state.error) {
-      return this.state.error;
-    }
-
-    if (!this.state.blogs.length) {
-      return "no blogs defined";
-    }
-
     const { blogs } = this.state;
 
     return (
